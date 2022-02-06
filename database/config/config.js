@@ -1,11 +1,11 @@
 module.exports= {
   "development": {
     "username": "root",
-    "password": "",
+    "password": "root",
     "database": "e-commerce-prog2",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "operatorsAliases": false,
+    //"operatorsAliases": false,
     "port" : 3306
   },
   "test": {
@@ -14,7 +14,7 @@ module.exports= {
     "database": "database_test",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "operatorsAliases": false
+    //"operatorsAliases": 0
   },
   "production": {
     "username": "root",
@@ -22,6 +22,6 @@ module.exports= {
     "database": "database_production",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "operatorsAliases": false
+    //"operatorsAliases": false
   }
 }

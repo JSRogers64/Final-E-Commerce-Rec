@@ -11,5 +11,8 @@ module.exports = {
         .then(function (productos){
             res.render('home', {productos:productos, title: "Home"})
         })
+        .catch(error=>{
+            console.log(error);
+        })
     }
 }

@@ -5,12 +5,16 @@ const op = db.Sequelize.Op;
 
 module.exports = {
     detalle: function (req,res) {
+     /*  console.log(req.session.usuarioLogueado) */ /* testeo de uss logueado */
         let id = req.params.id;
         db.Producto.findByPk(id, {
-           include: [{all: true, nested: true}]
+           include: [{all: true, nested: true}] //pedido asicronico a db
         })
         .then(function (unProducto) {
             res.render('detalle',{ unProducto: unProducto, title: unProducto.nombre })
+        })
+        .catch(error=>{
+            console.log(error)
         })
     },
 
@@ -30,30 +34,8 @@ module.exports = {
     },
 
     buscar: function (req,res) {
-        let busqueda = req.query.busqueda;
-        db.Producto.findAll({
-            where:
-                {
-                    [op.or]: [
-                            {
-                                nombre: {
-                                    [op.like]: `%${busqueda}%`
-                                }
-                            },
-                            {
-                                marca: {
-                                [op.like]: `%${busqueda}%`
-
-                                }
-                            }
-                   ]
-
-                }
-            
-        })
-        .then(function (resultados) {
-            res.render('resultadoBusqueda', { title: busqueda , resultados: resultados});
-        })
+       
+      
     },
 
     agregarComentario: function (req,res) {
@@ -85,17 +67,30 @@ module.exports = {
         if (req.session.usuarioLogueado == undefined) {
             res.redirect("/");
         }
-        db.Producto.create({
-            nombre: req.body.nombre,
-            marca: req.body.marca,
-            precio: req.body.precio,
-            categoria_id: req.body.categoria,
-            img_url: req.body.imagen
-        })
-        .then(function (resultado) {
-            res.redirect('/productos/detalle/'+ resultado.id)
-        })
-
+        /* punto 5 metodo CREATE - es necesario darle valor a los objetos -*/
+       db.Producto.create({
+           nombre: req.body.nombre,
+           marca: req.body.marca,
+           img_url: req.body.imagen,
+           precio: req.body.precio,
+           categoria_id: req.body.categoria,
+           usuario_id: req.session.usuarioLogueado.id
+       }
+       )
+       .then (()=> {
+            db.Producto.findAll(
+                {
+                where: {usuario_id: req.session.usuarioLogueado.id},
+                order: [['updatedAt', 'DESC']]
+            }
+            )
+                .then( productos=> {
+                res.render('misProductos', {productos: productos, title: 'Mis productos'})
+            }) /* si sale bien, arroja resultado de todos mis productos agregados */
+                .catch(error=>{console.log(error)}) /* req.send("No se pudo crear el producto") alternativa en la web */
+            }
+        )
+        .catch(error=>{console.log(error)}) /* si algo sale mal, imprimir el error */
     },
 
     misProductos: function (req, res) {

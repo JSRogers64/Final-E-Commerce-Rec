@@ -30,7 +30,7 @@ app.use(session({ secret: "Cualquiercosa!!!" }));
 
 app.use(function (req, res, next) {
   res.locals = {
-    usuarioLogueado: req.session.usuarioLogueado
+    usuarioLogueado: req.session.usuarioLogueado /*  */
   }
   return next();
 })
