@@ -34,9 +34,19 @@ module.exports = {
     },
 
     buscar: function (req,res) {
-       
-      
+        var busqueda = req.query.busqueda /* guardar en una variable lo que busca el uss */
+        db.Producto.findAll({
+            where: {
+                nombre: {[op.substring]:busqueda}
+            }
+
+        })
+        .then (productos=>{
+            res.render('resultadoBusqueda', { resultados: productos}) /* envia la variable "resultados" a la vista */
+        })   
+        .catch(error=>{console.log(error)}) /* req.send("No se pudo encontrar el producto") alternativa en la web */
     },
+
 
     agregarComentario: function (req,res) {
         if (req.session.usuarioLogueado == undefined) {
@@ -69,7 +79,7 @@ module.exports = {
         }
         /* punto 5 metodo CREATE - es necesario darle valor a los objetos -*/
        db.Producto.create({
-           nombre: req.body.nombre,
+           nombre: req.body.nombre,  /* req.body para acceder-obtener a formularios */
            marca: req.body.marca,
            img_url: req.body.imagen,
            precio: req.body.precio,
