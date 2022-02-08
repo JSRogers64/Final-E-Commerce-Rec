@@ -36,13 +36,13 @@
                     <li><a href="/usuario/login" target="_blank">Log In</a></li>
                 <% } %>
                 <li>
-                    <form action="/productos/buscar" method="GET">
+                    <form action="/productos/buscar" id="busqueda" method="GET">
                         <div class="">
                             <div class="uk-inline">
                                 <button class="uk-form-icon" type="submit" uk-icon="icon: search">
                                <!--  <a class="uk-form-icon" href="#" uk-icon="icon: search"></a>    --> 
                                 </button>
-                                <input class="uk-input" type="text" placeholder="Buscar productos..." name="busqueda">
+                                <input class="uk-input" type="text" placeholder="Buscar productos..." name="busqueda" id="barraDeBusqueda">
                             </div>
                         </div>
                     </form>
@@ -52,3 +52,4 @@
         </div>
     </nav>
 </header>
+ 
