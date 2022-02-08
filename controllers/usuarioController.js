@@ -93,12 +93,15 @@ module.exports = {
     },
 
     logout: function (req,res) {
-        if (req.session.usuarioLogueado != undefined) {
+     /*    if (req.session.usuarioLogueado != undefined) {
             res.redirect("/");
-        }
-        req.session.usuarioLogueado = undefined;
-        res.clearCookie('idUsuario');
-        return res.redirect('/');
+        } */
+        
+        res.clearCookie('usuarioLoguadoId'); /* borra la cookie */
+        req.session.destroy() /* elimina al uss en session */
+        res.redirect('/'); /* redirige al HOME */
+
+
     },
 
     comentarios: function (req, res) {
